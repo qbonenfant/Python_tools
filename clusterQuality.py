@@ -35,29 +35,29 @@ with open(clusterFile) as f:
             except ValueError:
                 genes.append(tag)
                 labels_true.append(len(genes) - 1)
-            cl_size+=1
+            cl_size += 1
         if(cl_size == 1):
-            single +=1
+            single += 1
         nbCluster += 1
         nbElem += len(elements)
 
 
-print("Number of clusters:"     ,nbCluster  , sep = "\t")
-print("Singletons: "            ,single     , sep = "\t")
-print("Total number of elements",nbElem     , sep = "\t")
+print("Number of clusters:", nbCluster, sep="\t")
+print("Singletons: ", single, sep="\t")
+print("Total number of elements", nbElem, sep="\t")
 
 
 # Metrics
 ari = metrics.adjusted_rand_score(labels_true, labels_pred)
-print("Adjusted Rand Index :", ari, sep = "\t")
+print("Adjusted Rand Index :", ari, sep="\t")
 
 # compute homogeneity,completeness and vmeasuer all at once
-h,c,vm = metrics.homogeneity_completeness_v_measure(labels_true, labels_pred)
+h, c, vm = metrics.homogeneity_completeness_v_measure(labels_true, labels_pred)
 
-print("Homogeneity :" , h , sep = "\t")
-print("Completeness :" , c, sep = "\t")
-print("V-measure :", vm, sep = "\t")
+print("Homogeneity :", h, sep="\t")
+print("Completeness :", c, sep="\t")
+print("V-measure :", vm, sep="\t")
 
-#F1 score, or F-Measure
+# F1 score, or F-Measure
 f1 = (metrics.f1_score(labels_true, labels_pred)
-print("F1-Score : ", f1, sep = "\t")
+print("F1-Score : ", f1, sep="\t")

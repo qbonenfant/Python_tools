@@ -1,8 +1,9 @@
 # coding=utf-8
 
-# Append tag to read name
+# Append tag to graph nodes.
 # input format is graphml for the graph
 # and g2rl for the gene/ read map
+# (easier / lighter to store / move around than a bam file and a GTF)
 import igraph as ig
 import sys
 
@@ -17,11 +18,11 @@ readTag = {}
 def appendTag(value, tags):
     tag = ""
     try:
-        tag = "_" + tags[value]
+        tag = tags[value]
     except KeyError:
-        tag = "_UNASSIGNED"
+        tag = "UNASSIGNED"
     finally:
-        return(value + tag)
+        return(tag)
 
 
 def parsg2r(g2rFile):
@@ -41,9 +42,12 @@ with open(tagFile, "r") as f:
     readTag = parsg2r(tagFile)
 
 g = ig.Graph.Read_GraphML(graphFile)
-
+single_count = 0
 for node in g.vs:
-    name = appendTag(node["id"], readTag)
-    node["id"] = name
+    tag = appendTag(node["id"], readTag)
 
+    if(tag == "UNASSIGNED"):
+        tag += str(single_count)
+        single_count += 1
+    node["tag"] = tag
 g.write_graphml(outFile)

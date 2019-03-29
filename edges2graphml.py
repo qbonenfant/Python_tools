@@ -36,20 +36,21 @@ headFile.write(graphmlHeader)
 nodes = {}
 counter = 0
 with open(edgeFile) as f:
-    for line in f:
-        data = line.rstrip("\n").split("\t")
-        fRead = data.pop(0)
-        if(fRead not in nodes):
-            nodes[fRead] = str(counter)
-            counter += 1
-        fReadId = nodes[fRead]
-        for i in range(0, len(data) - 1, 2):
-            read = data[i]
-            weight = data[i + 1]
-            if(read not in nodes):
-                nodes[read] = str(counter)
+    for i, line in enumerate(f):
+        if(i >= 2):
+            data = line.rstrip("\n").split("\t")
+            fRead = data.pop(0)
+            if(fRead not in nodes):
+                nodes[fRead] = str(counter)
                 counter += 1
-            graphFile.write(edgeFormat.format('n' + fReadId, 'n' + nodes[read], weight))
+            fReadId = nodes[fRead]
+            for i in range(0, len(data) - 1, 2):
+                read = data[i]
+                weight = data[i + 1]
+                if(read not in nodes):
+                    nodes[read] = str(counter)
+                    counter += 1
+                graphFile.write(edgeFormat.format('n' + fReadId, 'n' + nodes[read], weight))
 graphFile.write('</graph></graphml>\n')
 graphFile.close()
 
