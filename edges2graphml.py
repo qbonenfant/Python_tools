@@ -37,7 +37,7 @@ nodes = {}
 counter = 0
 with open(edgeFile) as f:
     for i, line in enumerate(f):
-        if(i >= 2):
+        if(i >= 2):  # Skipping the first two line of .edge file, they contains informations about the run.
             data = line.rstrip("\n").split("\t")
             fRead = data.pop(0)
             if(fRead not in nodes):

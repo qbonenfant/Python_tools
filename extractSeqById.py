@@ -1,28 +1,32 @@
-#coding=utf-8
+# coding=utf-8
 # create a smaller fasta from a sequence name list and a fasta file
 
 import sys
-idList=set()
+idList = {}
 with open(sys.argv[1]) as listFile:
     for line in listFile:
-        idList.add(line.rstrip("\n"))
+        data = line.rstrip("\n").split()
+        acc = data[0]
+        elems = "_" + "_".join(data[1:]) if len(data) > 1 else ""
+        elems = elems.rstrip("_")
+        idList[acc] = elems
 
 fasta = {}
 with open(sys.argv[2]) as readFile:
-    name=""
-    oldName=""
-    seq=""
+    name = ""
+    oldName = ""
+    seq = ""
     for line in readFile:
         if(line[0] == ">"):
-            if(seq!=""):
+            if(seq != ""):
                 if(name in idList):
-                    fasta[name]=seq
+                    fasta[name + idList[name]] = seq
             name = line.rstrip("\n")[1:]
             seq = ""
         else:
             seq += line.rstrip("\n")
     if(name in idList):
-        fasta[name]=seq
+        fasta[name] = seq
 for key in fasta:
     print(">" + key)
     print(fasta[key])
