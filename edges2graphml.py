@@ -14,6 +14,7 @@ graphFile = open(os.path.join(outPath, "edges_" + filename), 'w')  # file contai
 
 edgeFormat = '<edge source="{}" target="{}">\n\
 <data key="e_nk">{}</data>\n\
+<data key="e_dir">{}</data>\n\
 </edge>\n'
 
 nodeFormat = '<node id="n{}">\n\
@@ -29,6 +30,7 @@ xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
 http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
 <key id="v_id" for="node" attr.name="id" attr.type="string"/>
 <key id="e_nk" for="edge" attr.name="nk" attr.type="double"/>
+<key id="e_dir" for="edge" attr.name="dir" attr.type="bool"/>
 <graph id="G" edgedefault="undirected">\n'''
 
 headFile.write(graphmlHeader)
@@ -38,19 +40,24 @@ counter = 0
 with open(edgeFile) as f:
     for i, line in enumerate(f):
         if(i >= 2):  # Skipping the first two line of .edge file, they contains informations about the run.
+            
             data = line.rstrip("\n").split("\t")
-            fRead = data.pop(0)
-            if(fRead not in nodes):
-                nodes[fRead] = str(counter)
-                counter += 1
-            fReadId = nodes[fRead]
-            for i in range(0, len(data) - 1, 2):
-                read = data[i]
-                weight = data[i + 1]
-                if(read not in nodes):
-                    nodes[read] = str(counter)
+            fRead = data[0]
+            l1 = int(data[1])
+            read = data[2]
+            l2 = int(data[3])
+            orientation = data[4]
+            pos = [ tuple(int(a) for a in el.split(",")) for el in  data[5:] ]
+            weight = len(pos)
+
+            for r in [fRead, read]:
+                if(r not in nodes):
+                    nodes[r] = str(counter)
                     counter += 1
-                graphFile.write(edgeFormat.format('n' + fReadId, 'n' + nodes[read], weight))
+
+            graphFile.write(edgeFormat.format('n' + nodes[fRead], 'n' + nodes[read], weight, orientation))
+
+
 graphFile.write('</graph></graphml>\n')
 graphFile.close()
 
