@@ -5,6 +5,7 @@
 # and g2rl for the gene/ read map
 # (easier / lighter to store / move around than a bam file and a GTF)
 import igraph as ig
+# import networkx as nx
 import sys
 
 
@@ -38,16 +39,19 @@ def parsg2r(g2rFile):
     return(readTag)
 
 
-with open(tagFile, "r") as f:
-    readTag = parsg2r(tagFile)
+readTag = parsg2r(tagFile)
 
 g = ig.Graph.Read_GraphML(graphFile)
+# g = nx.read_graphml(graphFile)
 single_count = 0
 for node in g.vs:
+# for node in g.nodes:
     tag = appendTag(node["id"], readTag)
+    #tag = appendTag(g.node[node]["id"], readTag)
 
     if(tag == "UNASSIGNED"):
         tag += str(single_count)
         single_count += 1
     node["tag"] = tag
 g.write_graphml(outFile)
+#nx.write_graphml(g, outFile)
