@@ -22,7 +22,7 @@ with open(sys.argv[1]) as f:
                 acc = line
                 seq = ""
             seq += next(f).rstrip("\n")
-            if(len(seq) > sys.argv[2]):
+            if(len(seq) > int(sys.argv[2])):
                 print(acc)
                 print(seq)
                 # if fastq,keeping quality score
