@@ -18,8 +18,8 @@ def appendTag(value):
     
     tag = value.split("_")[-1]
     
-    if("ENSMUS" not in tag):
-        tag = "UNASSIGNED"
+    # if("ENSMUS" not in tag):
+    #     tag = "UNASSIGNED"
     
     return(tag)
 

@@ -1,17 +1,16 @@
 # coding=utf-8
 
-# Append tag to graph nodes.
-# input format is graphml for the graph
-# and g2rl for the gene/ read map
-# (easier / lighter to store / move around than a bam file and a GTF)
+# Append tag to read name in fasta
+
 import igraph as ig
 # import networkx as nx
 import sys
 
 
-graphFile = sys.argv[1]
+inFile = sys.argv[1]
 tagFile = sys.argv[2]
 outFile = sys.argv[3]
+tag_flag = "G" if len(sys.argv)<5 else sys.argv[4]
 
 readTag = {}
 
@@ -39,23 +38,21 @@ def parsg2r(g2rFile, tag_flag):
     return(readTag)
 
 
-tag_flag = "G"
-if(len(sys.argv) >4 ):
+
+if(len(sys.argv) > 4):
     tag_flag = sys.argv[4]
 
 readTag = parsg2r(tagFile, tag_flag)
 
-g = ig.Graph.Read_GraphML(graphFile)
-# g = nx.read_graphml(graphFile)
-single_count = 0
-for node in g.vs:
-    # for node in g.nodes:
-    tag = appendTag(node["id"], readTag)
-    #tag = appendTag(g.node[node]["id"], readTag)
-
-    if(tag == "UNASSIGNED"):
-        tag += str(single_count)
-        single_count += 1
-    node["tag"] = tag
-g.write_graphml(outFile)
-#nx.write_graphml(g, outFile)
+with open(inFile) as f:
+    out = open(outFile, "w")
+    single_count = 0
+    for line in f:
+        line = line.rstrip("\n")
+        if(line[0] == ">"):
+            tag = appendTag(line[1:], readTag)
+            if(tag == "UNASSIGNED"):
+                tag += str(single_count)
+                single_count += 1
+            line += "_" + tag
+        out.write(line + "\n")

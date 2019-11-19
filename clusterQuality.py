@@ -57,7 +57,3 @@ h, c, vm = metrics.homogeneity_completeness_v_measure(labels_true, labels_pred)
 print("Homogeneity :", h, sep="\t")
 print("Completeness :", c, sep="\t")
 print("V-measure :", vm, sep="\t")
-
-# F1 score, or F-Measure
-f1 = (metrics.f1_score(labels_true, labels_pred)
-print("F1-Score : ", f1, sep="\t")
