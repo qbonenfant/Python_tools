@@ -6,7 +6,7 @@ import sys
 nk_limit = int(sys.argv[2])
 outFile = sys.argv[3]
 g = ig.Graph.Read_GraphML(sys.argv[1])
-#print("Prev Nodes:", g.vcount())
+print("Previous node count:", g.vcount())
 g.delete_edges(g.es.select(nk_lt=nk_limit))
-#print("After Nodes:", g.vcount())
+print("New node count:", g.vcount())
 g.write_graphml(outFile)

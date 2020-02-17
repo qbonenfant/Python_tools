@@ -45,9 +45,9 @@ with open(edgeFile) as f:
     for i, line in enumerate(f):
         # Skipping the first two line of .edge file,
         # they contains informations about the run.
-        if(i >= 2):
+        data = line.rstrip("\n").split("\t")
+        if(len(data) > 2):
 
-            data = line.rstrip("\n").split("\t")
             fRead = data[0]
             l1 = int(data[1])
             read = data[2]

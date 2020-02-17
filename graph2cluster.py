@@ -1,5 +1,5 @@
 # coding=utf-8
-
+# Print connected components of a graph as a tabulated list of node.
 import igraph as ig
 import sys
 
