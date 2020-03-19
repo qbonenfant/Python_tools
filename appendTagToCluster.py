@@ -3,22 +3,10 @@
 import sys
 
 
-inFile = sys.argv[1]
-tagFile = sys.argv[2]
+tagFile = sys.argv[1]
+inFile = sys.argv[2]
 outFile = sys.argv[3]
 tag_flag = "G" if len(sys.argv) < 5 else sys.argv[4]
-
-readTag = {}
-
-
-def appendTag(value, tags):
-    tag = ""
-    try:
-        tag = tags[value]
-    except KeyError:
-        tag = "UNASSIGNED"
-    finally:
-        return(tag)
 
 
 def parsg2r(g2rFile, tag_flag):
@@ -32,6 +20,16 @@ def parsg2r(g2rFile, tag_flag):
                 read = line.split("\t")[1].rstrip("\n")
                 readTag[read] = currentGene
     return(readTag)
+
+
+def appendTag(value, tags):
+    tag = ""
+    try:
+        tag = tags[value]
+    except KeyError:
+        tag = "UNASSIGNED"
+    finally:
+        return(tag)
 
 
 if(len(sys.argv) > 4):
@@ -50,8 +48,7 @@ with open(inFile) as f:
             if(tag == "UNASSIGNED"):
                 tag += str(single_count)
                 single_count += 1
-                print(read + "_" + tag, file=sys.stderr)
-            else:
-                buff.append(read + "_" + tag)
-        if(len(buff)!=(0)):
+                # print(read + "_" + tag, file=sys.stderr)
+            buff.append(read + "_" + tag)
+        if(len(buff) != (0)):
             out.write("\t".join(buff) + "\n")
