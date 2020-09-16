@@ -9,21 +9,23 @@ form = "fasta"
 loop = True
 
 with open(sys.argv[1]) as f:
-    acc = ""
-    seq = ""
+    qual = ""
     while loop:
         try:
             line = next(f).rstrip("\n")
-            if(line[0] == ">"):
-                if(acc and "N" not in seq):
-                    print(acc)
-                    print(seq)
-                acc = line
-                seq = ""
-            else:
-                seq += line
+            if(line[0] == "@"):
+                form = "fastq"
+            seq = next(f)
+
+            if("N" not in seq):
+                # if fastq,keeping quality score
+                if(form == "fastq"):
+                    qual += next(f)
+                    qual += next(f)
+                print(line)
+                print(seq.rstrip("\n"))
+                if(qual):
+                    print(qual.rstrip("\n"))
+                qual = ""
         except StopIteration:
-            if(acc and "N" not in seq):
-                print(acc)
-                print(seq)
             loop = False
