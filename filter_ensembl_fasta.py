@@ -1,6 +1,6 @@
 # coding=utf8
 # Filter ENSEMBL fasta using metadata, rejecting reads fitting the filter
-
+# NOT FINISHED
 
 import sys
 import os

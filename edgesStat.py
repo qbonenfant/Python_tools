@@ -1,54 +1,26 @@
 # coding=utf-8
 
-# Check proportion of unassigned reads
+# Compute average occurence of seed per line and std dev
 
 import sys
+from math import sqrt
 
 edgeFile = sys.argv[1]
-tagFile = sys.argv[2]
-readTag = {}
 
 
-def getTag(value, tags):
-    tag = ""
-    try:
-        tag = tags[value]
-    except KeyError:
-        tag = "UNASSIGNED"
-    finally:
-        return(tag)
+def mean_std_dev(elements):
+    mean = float(sum(elements) / len(elements))
+    std_dev = 0.0
+    for el in elements:
+        std_dev += (el - mean)**2
+    return(mean, sqrt(std_dev / len(elements)))
 
 
-def parsg2r(g2rFile):
-    readTag = {}
-    with open(g2rFile, 'r') as g2rf:
-        currentGene = ""
-        for line in g2rf:
-            if(line[0] == "G"):
-                currentGene = line.split("\t")[1].rstrip("\n")
-            elif(line[0] == "R"):
-                read = line.split("\t")[1].rstrip("\n")
-                readTag[read] = currentGene
-    return(readTag)
-
-
-with open(tagFile, "r") as f:
-    readTag = parsg2r(tagFile)
-
-allTag = {}
+elements = []
 with open(edgeFile, "r") as f:
-    next(f)
-    next(f)
-
     for line in f:
         data = line.rstrip("\n").split("\t")
-        origin = data.pop(0)
-        allTag[origin] = getTag(origin, readTag)
-        newData = []
-        for read in data[::2]:
-            allTag[read] = getTag(read, readTag)
-val = list(allTag.values())
-total = len(val)
-tagCount = {}
-for tag in set(val):
-    print(tag, val.count(tag), sep='\t')
+        if(len(data) > 2):
+            elements.append(len(data[6:]))
+
+print(mean_std_dev(elements))

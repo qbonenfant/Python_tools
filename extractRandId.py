@@ -22,6 +22,7 @@ g2r = parsg2r(g2r_file)
 seq_index = list(g2r.keys())[:nb_seq]
 
 for acc in seq_index:
+    sys.stderr.write(acc + "\n")
     for read in g2r[acc]:
         print(read)
 

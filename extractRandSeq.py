@@ -29,8 +29,9 @@ def parse_fasta(fasta_file):
 fasta = parse_fasta(fasta_file)
 seq_index = list(fasta.keys())
 for i in range(nb_file):
-    filetag = str(i + 1) if (nb_file > 1) else ""
-    out = open(outfile + "_" + filetag + ".fasta", 'w')
+    filetag = str(i + 1)
+    filetag = "_" + filetag + ".fasta" if (nb_file > 1) else ""
+    out = open(outfile + filetag, 'w')
     # shuffling
     random.shuffle(seq_index)
     for acc in seq_index[:nb_seq]:

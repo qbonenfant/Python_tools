@@ -1,5 +1,5 @@
 # coding=utf-8
-# create a smaller fasta from a sequence name list and a fasta file
+# create a fasta file from a sequence name list and an ENSEMBL reference transcriptome
 
 import sys
 from Bio import SeqIO
@@ -16,7 +16,13 @@ with open(list_file) as f:
         idList.append(acc)
 
 records = SeqIO.parse(fastFile, extension)
-
 for record in records:
-    if(record.id in idList):
+
+    record_dict = {}
+    for el in str(record.description).split(" "):
+        data = el.split(":")
+        if(len(data) == 2 ):
+            k,v = data
+            record_dict[k] = v
+    if(record_dict["gene"] in idList):
         print(record.format(extension), end="")

@@ -1,5 +1,5 @@
 #coding = UTF-8
-# print out the gene ids from a fasta / fastq file
+# print out the gene ids from a reference ENSEMBL fasta / fastq file
 
 import sys
 

@@ -6,7 +6,7 @@ from collections import defaultdict as dd
 g = nx.DiGraph()
 
 VSPACE = 100
-HSPACE = 5
+HSPACE = 50
 last_pos = dd(list)
 
 with open(sys.argv[1]) as f:
