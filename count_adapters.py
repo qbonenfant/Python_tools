@@ -1,33 +1,42 @@
-# coding=utf-8
+# coding = utf-8
+# count adapters from an adapter stability benchmark
 
 import sys
-import re
-from collections import defaultdict
+from collections import defaultdict as dd
 
 
-adapters = {}
-DNARULE = re.compile(r'^[ATCG]+$')
-seq_type = ""
+adapters = dd(lambda: dd(lambda: dd(int)))
+
 with open(sys.argv[1]) as f:
-
-    while True:
+    loop = 1
+    data = []
+    while loop:
         try:
-            seq_type =  next(f).rstrip("\n")
-            forward  =  next(f).rstrip("\n")
-            reverse  =  next(f).rstrip("\n")
+
+            line = next(f).rstrip("\n")
+            if (line != ""):
+                data.append(line)
+            else:
+                for i in range(0, len(data), 3):
+                    method = data[i]
+                    start = data[i + 1]
+                    end = data[i + 2]
+                    adapters[method]["start"][start] += 1
+                    adapters[method]["end"][end] += 1
+                data = []
+
         except StopIteration:
-            break
-        else:
-            if(seq_type not in adapters):
-                adapters[seq_type] = {}
-                adapters[seq_type]["start"] = defaultdict(int)
-                adapters[seq_type]["end"] = defaultdict(int)
+            loop = 0
 
-            adapters[seq_type]["start"][forward] += 1
-            adapters[seq_type]["end"][reverse] += 1
+for method in sorted(adapters.keys(), reverse=True):
 
-for st in adapters:
-    for extremite in ["start", "end"]:
-        print(st, ", ", extremite)
-        for adapter, count in sorted(adapters[st][extremite].items(), reverse=True, key= lambda x: x[1]):
-            print(adapter, count)
+    print(method)
+    for which_end in ["start", "end"]:
+        print(which_end)
+        for key in sorted(adapters[method][which_end].keys(),
+                          key=lambda x: adapters[method][which_end][x],
+                          reverse=True):
+            val = adapters[method][which_end][key]
+            print("\t".join(str(el) for el in [val, key]))
+        print("")
+    print("")
