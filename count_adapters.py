@@ -9,12 +9,13 @@ adapters = dd(lambda: dd(lambda: dd(int)))
 
 with open(sys.argv[1]) as f:
     loop = 1
+    lc = 0
     data = []
     while loop:
         try:
 
             line = next(f).rstrip("\n")
-            if (line != ""):
+            if (lc % 7 != 6):
                 data.append(line)
             else:
                 for i in range(0, len(data), 3):
@@ -24,9 +25,9 @@ with open(sys.argv[1]) as f:
                     adapters[method]["start"][start] += 1
                     adapters[method]["end"][end] += 1
                 data = []
-
         except StopIteration:
             loop = 0
+        lc += 1
 
 for method in sorted(adapters.keys(), reverse=True):
 

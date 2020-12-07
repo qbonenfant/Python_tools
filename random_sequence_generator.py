@@ -24,7 +24,7 @@ if(len(sys.argv) < 2):
 
 offset = round(max_var * size / 2.0)
 
-for i in range(nb_seq)
+for i in range(nb_seq):
     r_size = randint(size - offset, size + offset)
     r_size = max(r_size, min_len)
     print(">Sequence_" + str(i))
