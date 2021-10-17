@@ -1,4 +1,7 @@
 # coding=utf-8
+# Trimm the the ends of all sequences from a multi-fasta file
+# usage: trimm_ends <fasta> <nb_base>
+# The sequence need to ne at least nb_base * 3 long to be cut.
 import sys
 
 
