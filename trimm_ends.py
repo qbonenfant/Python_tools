@@ -3,28 +3,18 @@
 # usage: trimm_ends <fasta> <nb_base>
 # The sequence need to ne at least nb_base * 3 long to be cut.
 import sys
+from Bio import SeqIO
 
 
-def trimm_fasta(fasta_file, nb_bases):
-    fasta = {}
-    seq = ""
-    acc = ""
-    with open(fasta_file, 'r') as f:
-        for line in f:
-            line = line.rstrip("\n")
-            if(line[0] == ">"):
-                if(seq != ""):
-                    if(len(seq) > nb_bases * 3):
-                        print(acc)
-                        print(seq[nb_bases:-nb_bases])
-                    seq = ""
-                acc = line
-            else:
-                seq += line
-        if(len(seq) > nb_bases * 3):
-            print(acc)
-            print(seq[nb_bases:-nb_bases])
-    return(fasta)
+def trimm_fasta(fasta_file, nb_bases, extension):
+    for record in fasta_file:
+        if(len(record) > nb_bases * 3):
+            record = record[nb_bases:-nb_bases]
+            print(record.format(extension), end="")
 
 
-fasta = trimm_fasta(sys.argv[1], int(sys.argv[2]))
+infile = sys.argv[1]
+extension = infile.split(".")[-1]
+
+records = SeqIO.parse(infile, extension)
+trimm_fasta(records, int(sys.argv[2]), extension)
