@@ -4,7 +4,7 @@ import sys
 
 
 max_var = 0.10
-min_len = 400
+min_len = 300
 nb_seq = int(sys.argv[1])
 size = int(sys.argv[2]) if len(sys.argv) > 2 else 1000
 alpha = sys.argv[3] if len(sys.argv) > 3 else "ATCG"
